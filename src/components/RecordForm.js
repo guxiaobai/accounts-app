@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 
+import {create} from '../utils/RecordsAPI.js'
+
 class RecordForm extends Component{
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
       date: '',
       title: '',
@@ -19,9 +21,25 @@ class RecordForm extends Component{
     this.setState({[name]: value})
   }
 
+  handleSubmit(event) {
+    event.preventDefault();
+    create(this.state).then(
+      response => {
+        this.props.handleNewRecord(response.data)
+        this.setState({
+          date: '',
+          title: '',
+          amount: ''
+      })
+    }
+    ).catch(
+      error => console.log(error.message)
+    )
+  }
+
   render(){
     return(
-      <form className="form-inline">
+      <form className="form-inline" onSubmit={this.handleSubmit.bind(this)}>
         <div className="form-group">
           <input type="text" className="form-control" placeholder="Date" name="date" value={this.state.date} onChange = {this.handleChange.bind(this)}/>
         </div>

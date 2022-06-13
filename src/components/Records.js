@@ -17,6 +17,17 @@ class Records extends Component {
     }
   }
 
+  addRecord(data){
+    this.setState({
+      error: null,
+      isLoaded: true,
+      records: [
+        ...this.state.records,
+        data
+      ]
+    })
+  }
+
 
   componentDidMount(){
     getAll().then(
@@ -56,7 +67,7 @@ class Records extends Component {
     return (
       <div>
          <h2>Records</h2>
-         <RecordForm />
+         <RecordForm handleNewRecord={this.addRecord.bind(this)}/>
          {recordsComponent}
       </div>
     )

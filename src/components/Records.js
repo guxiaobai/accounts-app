@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Record from './Record';
 
+import RecordForm from './RecordForm'
+
 import { getAll } from '../utils/RecordsAPI.js'
 
 
@@ -27,15 +29,15 @@ class Records extends Component {
 
   render(){
     const { error, isLoaded, records} = this.state
+    let recordsComponent;
 
     if(error){
-      return <div>Error: {error.message}</div>
+      recordsComponent =  <div>Error: {error.message}</div>
     }else if(!isLoaded){
-      return <div>Loading ....</div>
+      recordsComponent =<div>Loading ....</div>
     } else {
-      return (
-        <div>
-          <h2>Records</h2>
+      recordsComponent =  (
+        
           <table className="table table-bordered">
             <thead>
               <tr>
@@ -48,9 +50,16 @@ class Records extends Component {
               {records.map((record)=> <Record key={record.id} data={record}/>)}
             </tbody>
           </table>
-        </div>
       )
     }
+
+    return (
+      <div>
+         <h2>Records</h2>
+         <RecordForm />
+         {recordsComponent}
+      </div>
+    )
     
   }
 }

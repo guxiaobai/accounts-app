@@ -1,36 +1,57 @@
 import React, { Component } from "react";
 import Record from './Record';
 
+import axios  from "axios";
+
+
 class Records extends Component {
 
   constructor() {
     super();
     this.state = {
-      records: [
-        {"id": 1, "date": "2018-01-09", "title": "收入", "amount": 20},
-        {"id": 2, "date": "2018-01-09", "title": "录视频", "amount": 199} 
-      ]
+      error: null,
+      isLoaded: false,
+      records: []
     }
   }
 
-  render(){
-    return (
-      <div>
-        <h2>Records</h2>
-        <table className="table table-bordered">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Title</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.records.map((record)=> <Record key={record.id} data={record}/>)}
-          </tbody>
-        </table>
-      </div>
+
+  componentDidMount(){
+    axios.get("https://5b1bde186e0fd400146aaf8b.mockapi.io/records/1").then(
+      response => this.setState({records: response.data, isLoaded: true})
+    ).catch(
+      error => this.setState({isLoaded: true, error})
     )
+  }
+
+
+  render(){
+    const { error, isLoaded, records} = this.state
+
+    if(error){
+      return <div>Error: {error.message}</div>
+    }else if(!isLoaded){
+      return <div>Loading ....</div>
+    } else {
+      return (
+        <div>
+          <h2>Records</h2>
+          <table className="table table-bordered">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Title</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {records.map((record)=> <Record key={record.id} data={record}/>)}
+            </tbody>
+          </table>
+        </div>
+      )
+    }
+    
   }
 }
 

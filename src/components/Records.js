@@ -28,6 +28,10 @@ class Records extends Component {
     })
   }
 
+  updateRecord(record,data){
+
+  }
+
 
   componentDidMount(){
     getAll().then(
@@ -55,10 +59,11 @@ class Records extends Component {
                 <th>Date</th>
                 <th>Title</th>
                 <th>Amount</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {records.map((record)=> <Record key={record.id} data={record}/>)}
+              {records.map((record)=> <Record key={record.id} data={record} handleEditRecord={this.updateRecord.bind(this)}/>)}
             </tbody>
           </table>
       )
